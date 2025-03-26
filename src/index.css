@@ -1,12 +1,9 @@
 @import "tailwindcss";
-@import "@fontsource/jersey-10"; 
 
-
-
-@import "tailwindcss/preflight";
-@import "tailwindcss/components";
 @import "tailwindcss/utilities";
+
 
 .font-jersey {
   font-family: "Jersey 10", sans-serif;
 }
+ 

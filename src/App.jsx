@@ -1,5 +1,5 @@
 import React from "react";
-import Testing from "./componants/testing.jsx"; // Import component
+import HomePage from "./pages/HomePage.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
@@ -8,7 +8,7 @@ function App() {
    <BrowserRouter>
     <Routes>
       <Route path="/login" element={<LoginPage />} />
-      <Route path="/testing" element={<Testing />} />
+    <Route path="/HomePage" element={<HomePage />} /> 
     </Routes>
    </BrowserRouter> //dev routes for testing
   );
