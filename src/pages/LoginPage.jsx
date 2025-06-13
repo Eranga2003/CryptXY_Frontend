@@ -4,7 +4,7 @@ import CryptX from "../componants/images/Crypt x (1).png";
 
 export default function LoginPage() {
     return (
-        <div className="bg-blue-600 h-screen flex justify-center items-center">
+        <div className="bg-purple-800 h-screen flex justify-center items-center">
   <div className="bg-white p-8 rounded-lg shadow-lg w-[650px] h-[650px] relative">
     
     <img
@@ -44,7 +44,7 @@ export default function LoginPage() {
       
       
    {/* <button className='bg-amber-200 hover: w-20 h-30 absolute top-[70%] left-[50%] transform -translate-x-1/2 -translate-y-1/2 font-bold text-gray-800 cursor-pointer'>Login</button> */}
-   <button className='bg-blue-400 hover:bg-white w-20 h-[50px] absolute top-[70%] left-[50%] transform -translate-x-1/2 -translate-y-1/2 font-bold text-gray-800 cursor-pointer rounded-lg shadow-md'>
+   <button className='bg-purple-500 hover:bg-white w-20 h-[50px] absolute top-[70%] left-[50%] transform -translate-x-1/2 -translate-y-1/2 font-bold text-gray-800 cursor-pointer rounded-lg shadow-md'>
   Login
 </button>
 
