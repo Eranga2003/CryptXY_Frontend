@@ -5,6 +5,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import NewsPage from "./pages/NewsPage.jsx";
 import AirdropPage from "./pages/Airdrop.jsx";
 import LearnCryptoPage from "./pages/LearnCryptoPage.jsx";
+import SignUpPage from "./pages/Register.jsx";
+
 
 function App() {
   return (
@@ -15,6 +17,7 @@ function App() {
     <Route path="/News" element={<NewsPage />} />
     <Route path="/Airdrop"element={< AirdropPage/>} />
     <Route path="/LearnCrypto" element={<LearnCryptoPage/>} /> 
+    <Route path="/Register" element={<SignUpPage />} />
     </Routes>
    </BrowserRouter> //dev routes for testing
   );
