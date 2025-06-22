@@ -1,8 +1,34 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FaGoogle, FaApple, FaWallet } from 'react-icons/fa';
 import { SiBinance } from 'react-icons/si';
 
 export default function SignUpPage() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [message, setMessage] = useState('');
+
+  const handleSignup = async () => {
+    try {
+      const res = await fetch("http://localhost:8080/cryptoXY_backend_php/register.php", {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        setMessage(`✅ ${data.message}`);
+        setEmail('');
+        setPassword('');
+      } else {
+        setMessage(`❌ ${data.message}`);
+      }
+    } catch (error) {
+      setMessage("🚫 Server error: " + error.message);
+    }
+  };
+
   return (
     <div className="bg-[#0b1120] h-screen flex justify-center items-center px-4">
       <div className="bg-[#1a1f2e] p-8 rounded-2xl shadow-2xl w-full max-w-md text-white relative">
@@ -27,43 +53,44 @@ export default function SignUpPage() {
           <hr className="flex-grow border-gray-700" />
         </div>
 
-        {/* Email Field */}
+        {/* Email Input */}
         <div className="mb-4">
           <label className="block text-sm font-medium mb-1" htmlFor="email">Email Address</label>
           <input
             type="email"
             id="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             placeholder="Enter your email address..."
             className="w-full px-4 py-3 rounded-lg bg-[#2b3144] border border-[#39425d] placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-600"
           />
         </div>
 
-        {/* Password Field */}
+        {/* Password Input */}
         <div className="mb-4">
           <label className="block text-sm font-medium mb-1" htmlFor="password">Password</label>
           <input
             type="password"
             id="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             placeholder="Enter your password..."
             className="w-full px-4 py-3 rounded-lg bg-[#2b3144] border border-[#39425d] placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-600"
           />
         </div>
 
-        {/* Checkbox */}
-        <div className="flex items-start mb-6">
-          <input
-            type="checkbox"
-            id="subscribe"
-            className="mt-1 mr-3 w-4 h-4 bg-gray-600 rounded border-gray-500 focus:ring-blue-500"
-          />
-          <label htmlFor="subscribe" className="text-sm text-gray-300">
-            Please keep me updated by email with the latest crypto news, research findings, reward programs, event updates, coin listings and more information from <span className="font-semibold">CoinMarketCap</span>.
-          </label>
-        </div>
-
-        <button className="w-full bg-blue-600 hover:bg-blue-500 text-white py-3 rounded-lg font-semibold transition duration-200">
+        {/* Create Account Button */}
+        <button
+          onClick={handleSignup}
+          className="w-full bg-blue-600 hover:bg-blue-500 text-white py-3 rounded-lg font-semibold transition duration-200"
+        >
           Create Account
         </button>
+
+        {/* Feedback Message */}
+        {message && (
+          <div className="mt-4 text-sm text-center text-yellow-400">{message}</div>
+        )}
       </div>
     </div>
   );
