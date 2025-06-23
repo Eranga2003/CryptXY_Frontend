@@ -4,7 +4,7 @@ import CryptX from "../componants/images/Crypt x (1).png";
 import { FaGoogle, FaApple, FaWallet } from 'react-icons/fa';
 import { SiBinance } from 'react-icons/si';
 
-export default function LoginPage() {
+export default function LoginPageB() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
@@ -28,7 +28,7 @@ export default function LoginPage() {
 
       if (data.success) {
         // If login is successful, navigate to the /LhomePage
-        navigate('/LhomePage');
+        navigate('/ActivePlans');
       }
     } catch (error) {
       setMessage("🚫 Server error: " + error.message);

@@ -1,7 +1,7 @@
 // ... (imports remain unchanged)
 import React, { useState, useEffect } from "react";
 import Bgimg from "../componants/images/bgimg.jpg";
-import Navbar from "../componants/navbar";
+import Lnavbar from "../componants/Lnavbar.jsx";
 import Flag from "../componants/images/sri-lanka-flag.png";
 import SignalImg from "../componants/images/signel.png";
 import NewsImg from "../componants/images/news.png";
@@ -9,14 +9,14 @@ import LearnImg from "../componants/images/Learn.png";
 import AirdropImg from "../componants/images/Airdrop.png";
 import { Player } from "@lottiefiles/react-lottie-player";
 import AnimationData from "../componants/images/Animation - 1749717225299.json";
-import BitcoinStatsBox from "../componants/BitcoinStatsBox";
-import TrendingCoinsBox from "../componants/TrendingCoinsBox";
-import FearGreedBox from "../componants/FearGreedBox";
-import AltcoinSeasonBox from "../componants/AltcoinSeasonBox";
+import BitcoinStatsBox from "../componants/BitcoinStatsBox.jsx";
+import TrendingCoinsBox from "../componants/TrendingCoinsBox.jsx";
+import FearGreedBox from "../componants/FearGreedBox.jsx";
+import AltcoinSeasonBox from "../componants/AltcoinSeasonBox.jsx";
 import CryptoTickerBar from "../componants/liveprice.jsx";
 import { Link } from "react-router-dom";
 
-export default function HomePage() {
+export default function LhomePage() {
   const [topGainers, setTopGainers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [hoveredCoin, setHoveredCoin] = useState(null);
@@ -55,7 +55,7 @@ export default function HomePage() {
       <div
         className="relative min-h-screen bg-cover bg-center bg-no-repeat"
         style={{ backgroundImage: `url(${Bgimg})` }}>
-        <Navbar />
+        <Lnavbar />
         <div className="absolute top-37 left-6 z-20">
           <TrendingCoinsBox />
         </div>
@@ -117,9 +117,7 @@ export default function HomePage() {
       img: SignalImg,
       btnText: "View Signals",
       bg: "bg-blue-500",
-      hoverBg: "hover:bg-blue-600",
-      route:"/SignalPlans"
-    
+      hoverBg: "hover:bg-blue-600"
     },
     {
       title: "AirDrop",

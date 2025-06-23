@@ -1,34 +1,34 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
-import CryptX from "../componants/images/Crypt x (1).png";
 import { FaGoogle, FaApple, FaWallet } from 'react-icons/fa';
 import { SiBinance } from 'react-icons/si';
 
-export default function LoginPage() {
+export default function SignUpPageB() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
-  const navigate = useNavigate(); // Initialize useNavigate
 
-  const handleLogin = async () => {
-    if (!email || !password) {
-      setMessage("❗ Please fill out both fields.");
-      return;
-    }
+  const navigate = useNavigate(); // Initialize useNavigate for routing
 
+  const handleSignup = async () => {
     try {
-      const res = await fetch('http://localhost:8080/cryptoXY_backend_php/login.php', {
+      const res = await fetch("http://localhost:8080/cryptoXY_backend_php/register.php", {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
       });
-      
+
       const data = await res.json();
-      setMessage(data.message);
 
       if (data.success) {
-        // If login is successful, navigate to the /LhomePage
+        setMessage(`✅ ${data.message}`);
+        setEmail('');
+        setPassword('');
+        
+        // Redirect to LhomePage after successful signup
         navigate('/LhomePage');
+      } else {
+        setMessage(`❌ ${data.message}`);
       }
     } catch (error) {
       setMessage("🚫 Server error: " + error.message);
@@ -38,15 +38,28 @@ export default function LoginPage() {
   return (
     <div className="bg-[#0b1120] h-screen flex justify-center items-center px-4">
       <div className="bg-[#1a1f2e] p-8 rounded-2xl shadow-2xl w-full max-w-md text-white relative">
-        <img
-          src={CryptX}
-          alt="CryptX Logo"
-          className="w-24 h-24 mx-auto mb-6 rounded-full"
-        />
+        {/* Header Tabs */}
         <div className="flex justify-center mb-6 space-x-6">
-          <button className="text-lg font-bold border-b-2 border-white pb-1">Log In</button>
+          <button className="text-lg font-semibold text-gray-400 hover:text-white transition">Log In</button>
+          <button className="text-lg font-bold border-b-2 border-white pb-1">Sign Up</button>
         </div>
 
+        {/* OAuth Buttons */}
+        <div className="space-y-3 mb-6">
+          <OAuthButton icon={<FaGoogle />} text="Continue with Google" />
+          <OAuthButton icon={<FaApple />} text="Continue with Apple" />
+          <OAuthButton icon={<SiBinance />} text="Continue with Binance" />
+          <OAuthButton icon={<FaWallet />} text="Continue with Wallet" />
+        </div>
+
+        {/* Divider */}
+        <div className="flex items-center my-6">
+          <hr className="flex-grow border-gray-700" />
+          <span className="mx-4 text-sm text-gray-400">OR CONTINUE WITH EMAIL</span>
+          <hr className="flex-grow border-gray-700" />
+        </div>
+
+        {/* Email Input */}
         <div className="mb-4">
           <label className="block text-sm font-medium mb-1" htmlFor="email">Email Address</label>
           <input
@@ -59,6 +72,7 @@ export default function LoginPage() {
           />
         </div>
 
+        {/* Password Input */}
         <div className="mb-4">
           <label className="block text-sm font-medium mb-1" htmlFor="password">Password</label>
           <input
@@ -69,33 +83,20 @@ export default function LoginPage() {
             placeholder="Enter your password..."
             className="w-full px-4 py-3 rounded-lg bg-[#2b3144] border border-[#39425d] placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-600"
           />
-          <div className="text-right mt-1 text-sm text-blue-400 hover:underline cursor-pointer">Forgot password?</div>
         </div>
 
+        {/* Create Account Button */}
         <button
-          onClick={handleLogin}
-          className="w-full bg-blue-600 hover:bg-blue-500 text-white py-3 mt-4 rounded-lg font-semibold transition duration-200"
+          onClick={handleSignup}
+          className="w-full bg-blue-600 hover:bg-blue-500 text-white py-3 rounded-lg font-semibold transition duration-200"
         >
-          Log In
+          Create Account
         </button>
 
         {/* Feedback Message */}
         {message && (
           <div className="mt-4 text-sm text-center text-yellow-400">{message}</div>
         )}
-
-        <div className="flex items-center my-6">
-          <hr className="flex-grow border-gray-700" />
-          <span className="mx-4 text-sm text-gray-400">OR</span>
-          <hr className="flex-grow border-gray-700" />
-        </div>
-
-        <div className="space-y-3">
-          <OAuthButton icon={<FaGoogle />} text="Continue with Google" />
-          <OAuthButton icon={<FaApple />} text="Continue with Apple" />
-          <OAuthButton icon={<SiBinance />} text="Continue with Binance" />
-          <OAuthButton icon={<FaWallet />} text="Continue with Wallet" />
-        </div>
       </div>
     </div>
   );

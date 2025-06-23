@@ -5,8 +5,13 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import NewsPage from "./pages/NewsPage.jsx";
 import AirdropPage from "./pages/Airdrop.jsx";
 import LearnCryptoPage from "./pages/LearnCryptoPage.jsx";
-import SignUpPage from "./pages/Register.jsx";
-
+import SignUpPage from "./pages/SignUpPage.jsx";
+import LhomePage from "./pages/LhomePage.jsx";
+import SignalPlansPage from   "./pages/SignelPlans.jsx";
+import LoginPageB from "./pages/LoginPageB.jsx";
+import SignUpPageB from "./pages/SignUpPageB.jsx";
+import SignalPlansPageB from "./pages/ActivePlan.jsx";
+import ChatPage from "./pages/ChatPage.jsx";
 
 function App() {
   return (
@@ -18,6 +23,12 @@ function App() {
     <Route path="/Airdrop"element={< AirdropPage/>} />
     <Route path="/LearnCrypto" element={<LearnCryptoPage/>} /> 
     <Route path="/Register" element={<SignUpPage />} />
+    <Route path="/LhomePage" element={<LhomePage />} />
+    <Route path="/SignalPlans" element={<SignalPlansPage />} />
+    <Route path="/LoginPageB" element={<LoginPageB />} />
+    <Route path="/SignUpPageB" element={<SignUpPageB />} />
+    <Route path="/ActivePlans" element={<SignalPlansPageB />} />
+    <Route path="/ChatPage" element={<ChatPage />} />
     </Routes>
    </BrowserRouter> //dev routes for testing
   );

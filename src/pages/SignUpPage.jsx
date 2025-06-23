@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import { FaGoogle, FaApple, FaWallet } from 'react-icons/fa';
 import { SiBinance } from 'react-icons/si';
 
@@ -6,6 +7,8 @@ export default function SignUpPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
+
+  const navigate = useNavigate(); // Initialize useNavigate for routing
 
   const handleSignup = async () => {
     try {
@@ -21,6 +24,9 @@ export default function SignUpPage() {
         setMessage(`✅ ${data.message}`);
         setEmail('');
         setPassword('');
+        
+        // Redirect to LhomePage after successful signup
+        navigate('/LhomePage');
       } else {
         setMessage(`❌ ${data.message}`);
       }
