@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useNavigate } from 'react-router-dom';
 import CryptX from "../componants/images/Crypt x (1).png";
 import { FaGoogle, FaApple, FaWallet } from 'react-icons/fa';
 import { SiBinance } from 'react-icons/si';
@@ -8,7 +8,7 @@ export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate();
 
   const handleLogin = async () => {
     if (!email || !password) {
@@ -22,13 +22,24 @@ export default function LoginPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
       });
-      
+
       const data = await res.json();
       setMessage(data.message);
 
       if (data.success) {
-        // If login is successful, navigate to the /LhomePage
-        navigate('/LhomePage');
+        // ✅ Save user to localStorage
+        localStorage.setItem("user", JSON.stringify({
+          id: data.user.id,
+          email: data.user.email,
+          first_name: data.user.first_name
+        }));
+
+        // ✅ Navigate to homepage after login
+           if (data.user.role === "admin") {
+  navigate('/AdminDashboard');
+} else {
+  navigate('/LhomePage');
+}
       }
     } catch (error) {
       setMessage("🚫 Server error: " + error.message);
@@ -79,7 +90,6 @@ export default function LoginPage() {
           Log In
         </button>
 
-        {/* Feedback Message */}
         {message && (
           <div className="mt-4 text-sm text-center text-yellow-400">{message}</div>
         )}

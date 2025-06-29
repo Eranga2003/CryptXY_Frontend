@@ -1,36 +1,54 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useNavigate } from 'react-router-dom';
 import { FaGoogle, FaApple, FaWallet } from 'react-icons/fa';
 import { SiBinance } from 'react-icons/si';
 
-export default function SignUpPageB() {
+export default function SignUpPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [message, setMessage] = useState('');
 
-  const navigate = useNavigate(); // Initialize useNavigate for routing
+  const navigate = useNavigate();
 
   const handleSignup = async () => {
     try {
       const res = await fetch("http://localhost:8080/cryptoXY_backend_php/register.php", {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({
+          email,
+          password,
+          first_name: firstName,
+          last_name: lastName
+        }),
       });
 
       const data = await res.json();
 
-      if (data.success) {
+      if (data.success && data.user) {
+        // ✅ Save user to localStorage
+        localStorage.setItem("user", JSON.stringify({
+          id: data.user.id,
+          email: data.user.email,
+          first_name: data.user.first_name
+        }));
+
         setMessage(`✅ ${data.message}`);
         setEmail('');
         setPassword('');
-        
-        // Redirect to LhomePage after successful signup
+        setFirstName('');
+        setLastName('');
+
+        // ✅ Redirect to homepage
         navigate('/LhomePage');
       } else {
         setMessage(`❌ ${data.message}`);
+        localStorage.removeItem("user");
       }
     } catch (error) {
+      localStorage.removeItem("user");
       setMessage("🚫 Server error: " + error.message);
     }
   };
@@ -38,7 +56,8 @@ export default function SignUpPageB() {
   return (
     <div className="bg-[#0b1120] h-screen flex justify-center items-center px-4">
       <div className="bg-[#1a1f2e] p-8 rounded-2xl shadow-2xl w-full max-w-md text-white relative">
-        {/* Header Tabs */}
+
+        {/* Tabs */}
         <div className="flex justify-center mb-6 space-x-6">
           <button className="text-lg font-semibold text-gray-400 hover:text-white transition">Log In</button>
           <button className="text-lg font-bold border-b-2 border-white pb-1">Sign Up</button>
@@ -59,7 +78,33 @@ export default function SignUpPageB() {
           <hr className="flex-grow border-gray-700" />
         </div>
 
-        {/* Email Input */}
+        {/* First Name */}
+        <div className="mb-4">
+          <label className="block text-sm font-medium mb-1" htmlFor="firstName">First Name</label>
+          <input
+            type="text"
+            id="firstName"
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+            placeholder="Enter your first name..."
+            className="w-full px-4 py-3 rounded-lg bg-[#2b3144] border border-[#39425d] placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-600"
+          />
+        </div>
+
+        {/* Last Name */}
+        <div className="mb-4">
+          <label className="block text-sm font-medium mb-1" htmlFor="lastName">Last Name</label>
+          <input
+            type="text"
+            id="lastName"
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
+            placeholder="Enter your last name..."
+            className="w-full px-4 py-3 rounded-lg bg-[#2b3144] border border-[#39425d] placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-600"
+          />
+        </div>
+
+        {/* Email */}
         <div className="mb-4">
           <label className="block text-sm font-medium mb-1" htmlFor="email">Email Address</label>
           <input
@@ -72,7 +117,7 @@ export default function SignUpPageB() {
           />
         </div>
 
-        {/* Password Input */}
+        {/* Password */}
         <div className="mb-4">
           <label className="block text-sm font-medium mb-1" htmlFor="password">Password</label>
           <input
@@ -85,7 +130,7 @@ export default function SignUpPageB() {
           />
         </div>
 
-        {/* Create Account Button */}
+        {/* Sign Up Button */}
         <button
           onClick={handleSignup}
           className="w-full bg-blue-600 hover:bg-blue-500 text-white py-3 rounded-lg font-semibold transition duration-200"
@@ -93,7 +138,7 @@ export default function SignUpPageB() {
           Create Account
         </button>
 
-        {/* Feedback Message */}
+        {/* Message */}
         {message && (
           <div className="mt-4 text-sm text-center text-yellow-400">{message}</div>
         )}
@@ -102,6 +147,7 @@ export default function SignUpPageB() {
   );
 }
 
+// OAuth Button Component
 function OAuthButton({ icon, text }) {
   return (
     <button className="w-full flex items-center justify-center space-x-3 bg-[#2b3144] hover:bg-[#39425d] text-white py-2 px-4 rounded-lg transition duration-200">

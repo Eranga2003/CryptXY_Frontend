@@ -14,7 +14,7 @@ import {
   Activity
 } from 'lucide-react';
 
-const ChatPage = () => {
+const ChatPageB = () => {
   const [isDarkMode, setIsDarkMode] = useState(true);
   const [messages, setMessages] = useState([]);
   const [userMessage, setUserMessage] = useState('');
@@ -24,6 +24,7 @@ const ChatPage = () => {
   const [signalMessage, setSignalMessage] = useState('');
   const [showSignalForm, setShowSignalForm] = useState(false);
   const [activeTab, setActiveTab] = useState('chat'); // 'chat' or 'signals'
+  const [signals, setSignals] = useState([]); // Add this state at the top with other useStates
   const fileInputRef = useRef(null);
   const messagesEndRef = useRef(null);
   const signalFormRef = useRef(null);
@@ -64,10 +65,20 @@ const ChatPage = () => {
     };
   }, []);
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  // Fetch signals from backend
+  const fetchSignals = async () => {
+    try {
+      const res = await fetch('http://localhost:8080/cryptoXY_backend_php/getTradingSignal.php');
+      const data = await res.json();
+      if (data.success) {
+        setSignals(data.signals || []);
+      }
+    } catch (err) {
+      console.error('Error fetching signals', err);
+    }
   };
 
+  // Fetch messages
   const fetchMessages = async () => {
     try {
       const res = await fetch('http://localhost:8080/cryptoXY_backend_php/getMessages.php');
@@ -185,11 +196,36 @@ const ChatPage = () => {
     }
   };
 
+  // Function to send a trading signal (admin only)
+  const handleSendTradingSignal = async () => {
+    if (!signalMessage.trim()) return;
+    try {
+      const res = await fetch('http://localhost:8080/cryptoXY_backend_php/postTradingSignal.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: signalMessage }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setSignalMessage('');
+        fetchSignals(); // Refresh signals list
+      } else {
+        alert(data.message);
+      }
+    } catch (err) {
+      alert('Error sending signal');
+    }
+  };
+
   const handleKeyPress = (e) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       handleSend();
     }
+  };
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
   const formatTime = (timestamp) => new Date(timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
@@ -530,10 +566,45 @@ const ChatPage = () => {
           </>
         ) : (
           // Signals area (customize as needed)
-          <div className="flex-1 flex flex-col items-center justify-center">
+          <div className="flex-1 flex flex-col items-center justify-start p-8">
             <h2 className="text-2xl font-bold mb-4 text-white">Live Trading Signals</h2>
-            <p className="text-gray-400">Show your live trading signals here.</p>
-            {/* You can map signals or add more UI here */}
+            {/* Admin signal form */}
+            {loggedUser.is_admin && (
+              <div className="w-full max-w-xl mb-6">
+                <div className="flex gap-2">
+                  <input
+                    className="flex-1 rounded-l-lg px-3 py-2 bg-gray-800 text-white border border-gray-700 focus:outline-none"
+                    placeholder="Enter trading signal..."
+                    value={signalMessage}
+                    onChange={e => setSignalMessage(e.target.value)}
+                  />
+                  <button
+                    onClick={handleSendTradingSignal}
+                    className="rounded-r-lg px-4 bg-blue-600 text-white font-semibold hover:bg-blue-700"
+                    disabled={!signalMessage.trim()}
+                  >
+                    Send
+                  </button>
+                </div>
+              </div>
+            )}
+            {/* Signals list */}
+            <div className="w-full max-w-xl space-y-4">
+              {signals.length === 0 ? (
+                <div className="text-gray-400 text-center">No trading signals yet.</div>
+              ) : (
+                signals.map(sig => (
+                  <div key={sig.id} className="bg-gray-800 rounded-lg p-4 shadow">
+                    <div className="flex items-center mb-1">
+                      <AlertTriangle className="text-amber-400 mr-2" size={18} />
+                      <span className="font-bold text-white">Admin</span>
+                      <span className="ml-auto text-xs text-gray-400">{new Date(sig.created_at).toLocaleString()}</span>
+                    </div>
+                    <div className="text-white">{sig.message}</div>
+                  </div>
+                ))
+              )}
+            </div>
           </div>
         )}
       </div>
@@ -541,4 +612,4 @@ const ChatPage = () => {
   );
 };
 
-export default ChatPage;
+export default ChatPageB;

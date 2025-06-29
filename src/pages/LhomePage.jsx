@@ -117,7 +117,8 @@ export default function LhomePage() {
       img: SignalImg,
       btnText: "View Signals",
       bg: "bg-blue-500",
-      hoverBg: "hover:bg-blue-600"
+      hoverBg: "hover:bg-blue-600",
+      route:"/MyPlansPage"
     },
     {
       title: "AirDrop",

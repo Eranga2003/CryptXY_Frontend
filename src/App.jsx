@@ -12,7 +12,9 @@ import LoginPageB from "./pages/LoginPageB.jsx";
 import SignUpPageB from "./pages/SignUpPageB.jsx";
 import SignalPlansPageB from "./pages/ActivePlan.jsx";
 import ChatPage from "./pages/ChatPage.jsx";
-
+import AdminDashboard from "./pages/AdminDashboard.jsx"
+import ChatPageB from "./pages/ChatPageAdmin.jsx";
+import  MyPlansPage from "./pages/MyPlansPage.jsx"
 function App() {
   return (
    <BrowserRouter>
@@ -29,6 +31,9 @@ function App() {
     <Route path="/SignUpPageB" element={<SignUpPageB />} />
     <Route path="/ActivePlans" element={<SignalPlansPageB />} />
     <Route path="/ChatPage" element={<ChatPage />} />
+    <Route path="/AdminDashboard" element={<AdminDashboard />} />
+    <Route path="/ChatPageB" element={<ChatPageB />} />
+    <Route path="/MyPlansPage" element={<MyPlansPage />} />
     </Routes>
    </BrowserRouter> //dev routes for testing
   );
